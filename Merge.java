@@ -1,48 +1,101 @@
-/******************************************************************************
- *  _Example commands for running this file_
- *  Compilation:  javac -Xlint Merge.java
- *  Execution:    java Merge
- *
- *  Example code reverses the input array. Edit this file
- *  to check whether the input is a palindrome.
- *
- ******************************************************************************/
-
-
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.io.*;
 import java.util.Queue;
+import java.util.LinkedList;
+import java.util.Scanner;
 
-public class Merge {
+	public class Merge {
+		public static void main(String[]args) throws FileNotFoundException {
+			
+			Queue<Integer> q1 = new LinkedList<Integer>();
+			Queue<Integer> q2 = new LinkedList<Integer>();
+			Queue<Integer> q3;
+			
+			q1.add(1);
+			q1.add(2);
+			q1.add(3);
+			q1.add(4);
+			
+			q2.add(5);
+			q2.add(6);
+			q2.add(7);
+			q2.add(8);
+			
+			System.out.println("Queue 1: ");
+			printQueue(q1);
+			
+			System.out.println("Queue 2: ");
+			printQueue(q2);
+			
+			System.out.println("Sorted Merged Queue: ");
+			
+			Queue q = merge(q1,q2);
+			q.toArray();
+			System.out.print(q);
+		}
+ 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public static Queue merge(Queue q1, Queue q2) {
+			if(q1.isEmpty()) {
+				return q2;
+			}
+			if(q2.isEmpty()) {
+				return q1;
+			}
+			
+			Queue<Integer> q3 = new LinkedList<Integer>();
+			
+			int input1 = q1.size();
+			int input2 = q2.size();
+			
+			int i = 0;
+			int j = 0;
+			
+			int x;
+			int y;
+			
+			while(i<input1 || j<input2) {
+				if(1<input1 && j<input2) {
+					x= (int) q1.peek();
+					y= (int) q2.peek();
+				
+				if(x < y) {
+					q1.remove();
+					q3.add(x);
+					q1.add(x);
+					i++;
+					}
+				else {
+					q2.remove();
+					q3.add(y);
+					q2.add(y);
+					
+					j++;
+					
+					}
+				}
+				else if(i<input1 && j>=input2) {
+					x = (int) q1.remove();
+					q1.add(x);
+					q3.add(x);
+					i++;
+				}
+				
+				else if(i>=input1 && j<input2) {
+					y = (int) q1.remove();
+					q2.add(y);
+					q3.add(y);
+				}
+			}
+			return q3;
+		}
+		
+		public static void printQueue (Queue q) {
+			for(Object item: q) {
+				System.out.print(item+" ");
+			}
+			
+			System.out.println();
+		}
+		
 
-  // Sample input
-  public static int[] input1 = {1,3,5};
-  public static int[] input2 = {2,4,5,6};
-
-  public static void main(String[] args){
-
-    // Display Input1
-    System.out.println("Input1\t" + Arrays.toString(input1));
-
-    // Create empty queues
-    Queue<Integer> queue1 = new LinkedList<Integer>();
-    Queue<Integer> queue2 = new LinkedList<Integer>();
-
-
-    for(int i=0; i<input1.length; i++){
-      // One by one push all characters of string to queue.
-      queue1.add(input1[i]);
-    }
-
-    // Save the input string
-    String output = "";
-    while(queue1.peek() != null ){
-      //One by one pop all characters from stack and put them back to string.
-      output += Integer.toString(queue1.poll());
-    }
-
-    // Display reversed as string array
-    System.out.println("Output1\t" + Arrays.toString(output.split("")));
-
-  }
-}
+	}
